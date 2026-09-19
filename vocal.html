@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocal - Artisan Mobile Bénin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0a0a0a;color:white;min-height:100vh;padding:20px;padding-bottom:90px}
+.header{text-align:center;padding:15px 0}
+.logo{font-size:32px;font-weight:900;color:#FFC107}.logo span{color:white}
+.sub{color:#aaa;font-size:13px}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:25px;margin:15px auto;max-width:480px}
+.badge{display:inline-block;background:#FFC107;color:black;padding:5px 14px;border-radius:20px;font-weight:bold;font-size:12px;margin-bottom:12px}
+.mic-box{text-align:center;padding:25px 0;background:#111;border-radius:15px;border:2px dashed #FFC107;margin:18px 0}
+.mic-btn{width:90px;height:90px;border-radius:50%;background:#FFC107;border:none;font-size:42px;cursor:pointer;box-shadow:0 0 20px rgba(255,193,7,0.4)}
+.mic-btn.recording{background:#ff3b3b;animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,59,0.7)}70%{box-shadow:0 0 0 20px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
+.status{margin-top:12px;font-weight:bold;color:#FFC107;min-height:18px}
+.timer{font-size:34px;font-weight:900;margin:8px 0}
+audio{width:100%;margin-top:12px}
+input,select,textarea{width:100%;padding:14px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:white;font-size:15px;margin-top:6px}
+label{font-size:13px;color:#aaa}
+.group{margin:12px 0}
+.btn{width:100%;padding:16px;border:none;border-radius:12px;font-weight:900;font-size:16px;cursor:pointer;margin-top:10px}
+.btn-wa{background:#25D366;color:white}.btn-mail{background:#FFC107;color:black}
+.btn:disabled{opacity:.35}
+.back{display:block;text-align:center;margin-top:18px;color:#777;text-decoration:none}
+/* CHAT */
+.chat-bubble{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,.5);z-index:999}
+.chat-box{position:fixed;bottom:90px;right:20px;width:300px;background:#1a1a1a;border:1px solid #333;border-radius:15px;padding:15px;display:none;z-index:999}
+.chat-box h4{color:#FFC107;margin-bottom:8px}.chat-box p{font-size:13px;color:#bbb;margin-bottom:10px}
+.chat-box a{display:block;background:#25D366;color:white;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">ARTISAN <span>MOBILE</span></div>
+<div class="sub">COTONOU • CALAVI • GODOMEY 🇧🇯</div>
+</div>
+
+<div class="card">
+<div class="badge">🎙️ MESSAGE VOCAL BÉNIN</div>
+<h2>Dis ta panne, on gère</h2>
+<p style="color:#bbb;font-size:14px;margin:8px 0 15px;line-height:1.4">Appuie sur 🎤 et dis : "Mon climatiseur ne glace plus à Fidjrossè". Ça s'écrit tout seul.</p>
+
+<div class="mic-box">
+<button id="micBtn" class="mic-btn">🎤</button>
+<div id="status" class="status">Appuie pour parler</div>
+<div id="timer" class="timer">00:00</div>
+<audio id="player" controls style="display:none"></audio>
+</div>
+
+<div class="group"><label>Ton nom</label><input id="nom" placeholder="Ex: Pascal - Calavi"></div>
+<div class="group"><label>Quartier</label>
+<select id="quartier"><option value="">Choisir...</option><option>Fidjrossè</option><option>Godomey</option><option>Abomey-Calavi</option><option>Akpakpa</option><option>Ganhi</option><option>Zogbo</option><option>Autre Bénin</option></select>
+</div>
+<div class="group"><label>Ton WhatsApp</label><input id="tel" placeholder="97 XX XX XX"></div>
+<div class="group"><label>Transcription</label><textarea id="trans" rows="3" placeholder="Ta voix s'écrit ici..."></textarea></div>
+
+<button id="btnWa" class="btn btn-wa" disabled>💬 Envoyer sur WhatsApp</button>
+<button id="btnMail" class="btn btn-mail" disabled>📧 Envoyer à pascalahohonon2@gmail.com</button>
+<a class="back" href="index.html">← Retour accueil</a>
+</div>
+
+<!-- CHAT WIDGET -->
+<div class="chat-bubble" onclick="toggleChat()">💬</div>
+<div id="chatBox" class="chat-box">
+<h4>Besoin d'aide?</h4>
+<p>Écris-nous direct sur WhatsApp, on répond en 2 min (Bénin 229).</p>
+<a href="https://wa.me/22997000000?text=Salut%20Artisan%20Mobile%20Bénin%20🇧🇯%20j'ai%20besoin%20d'un%20artisan">Ouvrir WhatsApp</a>
+</div>
+
+<script>
+let rec, chunks=[], blob, url, isRec=false, start, iv, recognition;
+const micBtn=document.getElementById('micBtn'), statusEl=document.getElementById('status'), timerEl=document.getElementById('timer'), player=document.getElementById('player'), transEl=document.getElementById('trans'), btnWa=document.getElementById('btnWa'), btnMail=document.getElementById('btnMail');
+
+if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+  let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recognition=new SR(); recognition.lang='fr-FR'; recognition.continuous=true; recognition.interimResults=true;
+  recognition.onresult=e=>{let t=''; for(let i=0;i<e.results.length;i++) t+=e.results[i][0].transcript; transEl.value=t;}
+}
+micBtn.onclick=async()=>{
+  if(!isRec){
+    try{
+      let stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      rec=new MediaRecorder(stream); chunks=[];
+      rec.ondataavailable=e=>chunks.push(e.data);
+      rec.onstop=()=>{blob=new Blob(chunks,{type:'audio/webm'}); url=URL.createObjectURL(blob); player.src=url; player.style.display='block'; btnWa.disabled=false; btnMail.disabled=false; statusEl.textContent='✅ Prêt! Envoie'; statusEl.style.color='#25D366';}
+      rec.start(); if(recognition) recognition.start();
+      isRec=true; micBtn.classList.add('recording'); micBtn.textContent='⏹️'; statusEl.textContent='🔴 Je t\'écoute...'; start=Date.now();
+      iv=setInterval(()=>{let s=Math.floor((Date.now()-start)/1000); let m=String(Math.floor(s/60)).padStart(2,'0'); s=String(s%60).padStart(2,'0'); timerEl.textContent=m+':'+s;},1000);
+    }catch{alert('Active le micro 🙏');}
+  }else{
+    rec.stop(); if(recognition) recognition.stop(); isRec=false; micBtn.classList.remove('recording'); micBtn.textContent='🎤'; clearInterval(iv);
+  }
+}
+function toggleChat(){ let b=document.getElementById('chatBox'); b.style.display=b.style.display==='block'?'none':'block'; }
+btnWa.onclick=()=>{
+  let n=document.getElementById('nom').value, q=document.getElementById('quartier').value, t=document.getElementById('tel').value, tr=transEl.value||'Vocal';
+  if(!n||!q||!t) return alert('Remplis nom/quartier/tel');
+  let msg=`🇧🇯 ARTISAN MOBILE - VOCAL%0A%0A👤 ${n}%0A📍 ${q}%0A📱 ${t}%0A🎙️ ${tr}%0A%0A(Vocal enregistré à envoyer)`;
+  window.open('https://wa.me/22997000000?text='+msg,'_blank');
+}
+btnMail.onclick=()=>{
+  let n=document.getElementById('nom').value, q=document.getElementById('quartier').value, t=document.getElementById('tel').value, tr=transEl.value;
+  if(!n||!q||!t) return alert('Remplis nom/quartier/tel');
+  fetch('https://formsubmit.co/ajax/pascalahohonon2@gmail.com',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:`🎙️ VOCAL ${n} - ${q}`,Nom:n,Quartier:q,Tel:t,Message:tr,_template:'table'})}).then(()=>alert('✅ Envoyé à pascalahohonon2@gmail.com'));
+}
+</script>
+</body>
+  </html>
