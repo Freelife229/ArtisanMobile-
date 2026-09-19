@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription Artisan - Artisan Mobile BJ</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0f0f0f;color:#fff;padding:15px}
+.box{max-width:520px;margin:20px auto;background:#1a1a1a;padding:28px;border-radius:20px;border:1px solid #2a2a2a;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.logo{text-align:center;margin-bottom:10px}
+.logo h1{color:#FFC107;margin:0;font-size:26px} .logo h1 span{color:#fff}
+.logo p{color:#888;font-size:13px;margin:5px 0 15px}
+h2{color:#fff;text-align:center;margin:10px 0 5px;font-size:22px}
+.sub{color:#aaa;text-align:center;font-size:13px;margin-bottom:20px}
+label{display:block;margin:14px 0 6px;color:#ddd;font-size:14px;font-weight:bold}
+input,select,textarea{width:100%;padding:14px;border-radius:10px;border:1px solid #333;background:#252525;color:#fff;font-size:16px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#FFC107}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;background:#FFC107;color:#000;padding:16px;border:none;border-radius:50px;font-weight:bold;margin-top:22px;font-size:18px;cursor:pointer}
+.btn:hover{background:#ffcf33}
+.note{background:#221f00;border:1px solid #443e00;color:#ffda44;padding:12px;border-radius:10px;font-size:12px;text-align:center;margin-top:15px}
+a{color:#FFC107;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="logo">
+<h1>Artisan <span>Mobile</span></h1>
+<p>COTONOU • ABOMEY-CALAVI • GODOMEY • AKPAKPA • BÉNIN</p>
+</div>
+
+<h2>Devenir Artisan Partenaire</h2>
+<p class="sub">Inscription 100% gratuite - Les 30 premiers artisans sont à vie sans commission</p>
+
+<form action="https://formsubmit.co/pascalahohonon2@gmail.com" method="POST">
+<input type="hidden" name="_subject" value="Nouvelle inscription Artisan Mobile">
+<input type="hidden" name="_next" value="https://freelife229.github.io/ArtisanMobile/merci.html">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+
+<label>Nom et Prénom *</label>
+<input name="nom_complet" required placeholder="Ex: Koffi Jean">
+
+<div class="row">
+<div>
+<label>WhatsApp *</label>
+<input name="whatsapp" required placeholder="97 00 00 00">
+</div>
+<div>
+<label>2ème numéro</label>
+<input name="telephone2" placeholder="Optionnel">
+</div>
+</div>
+
+<label>Métier principal *</label>
+<select name="metier_principal" required>
+<option value="">-- Choisis ton métier --</option>
+<option>⚡ Électricien Bâtiment</option>
+<option>🚿 Plombier</option>
+<option>❄️ Frigoriste / Climatisation</option>
+<option>🧱 Maçon / Ferrailleur</option>
+<option>🪚 Menuisier Bois</option>
+<option>🪟 Menuisier Aluminium / Vitrier</option>
+<option>🎨 Peintre Bâtiment</option>
+<option>🔨 Carreleur</option>
+<option>⚙️ Soudeur / Métallier (Portail, Grille)</option>
+<option>🔧 Mécanicien Auto / Moto</option>
+<option>📺 Antenniste / Électronicien / Dépanneur TV</option>
+<option>💻 Informaticien / Réparateur Téléphone</option>
+<option>🌿 Jardinier / Paysagiste</option>
+<option>🧹 Nettoyage / Femme de ménage / Entretien</option>
+<option>📸 Photographe / Vidéaste</option>
+<option>✂️ Coiffeur / Couturier / Autre</option>
+</select>
+
+<label>2ème métier (si tu en as)</label>
+<select name="metier_secondaire">
+<option value="">Aucun</option>
+<option>Électricien</option><option>Plombier</option><option>Frigoriste</option><option>Maçon</option>
+<option>Menuisier Bois</option><option>Menuisier Alu</option><option>Peintre</option><option>Carreleur</option>
+<option>Soudeur</option><option>Mécanicien</option><option>Antenniste</option><option>Autre</option>
+</select>
+
+<label>Ta zone / Quartier *</label>
+<select name="zone" required>
+<option value="">-- Où tu travailles --</option>
+<option>Cotonou - Fidjrossè / Jacquot / Haie Vive</option>
+<option>Cotonou - Akpakpa / Ganhi / Saint Michel</option>
+<option>Cotonou - Gbégamey / Wologuèdè / Agla</option>
+<option>Abomey-Calavi / Godomey / Cococodji</option>
+<option>Abomey-Calavi Centre / Togoudo / Zopah</option>
+<option>Sèmè / Cotonou-Est / Porto-Novo</option>
+<option>Ouidah / Pahou / Toute la zone</option>
+<option>Je me déplace partout au Bénin</option>
+</select>
+
+<label>Expérience *</label>
+<select name="experience" required>
+<option value="">-- Ton niveau --</option>
+<option>Débutant - moins de 1 an</option>
+<option>Intermédiaire - 1 à 3 ans</option>
+<option>Professionnel - 3 à 7 ans</option>
+<option>Expert - Plus de 7 ans</option>
+</select>
+
+<label>Dis-nous en 1 phrase ce que tu fais bien</label>
+<textarea name="description" rows="3" placeholder="Ex: Je dépanne les climatiseurs rapidement, je suis disponible le dimanche..."></textarea>
+
+<button class="btn" type="submit">✅ M'INSCRIRE GRATUITEMENT</button>
+
+<div class="note">
+🔒 Tes infos restent privées. On te contacte sur WhatsApp en 24h pour valider.<br>
+Déjà 12 artisans inscrits cette semaine à Cotonou.
+</div>
+
+<p style="text-align:center;margin-top:20px;font-size:13px"><a href="index.html">← Retour à l'accueil</a></p>
+</form>
+</div>
+</body>
+                                </html>
